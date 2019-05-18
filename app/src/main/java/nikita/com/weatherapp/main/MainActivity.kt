@@ -1,28 +1,21 @@
 package nikita.com.weatherapp.main
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import nikita.com.weatherapp.R
 import nikita.com.weatherapp.utils.permissionsToRequest
 import org.koin.android.ext.android.inject
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 
 
 class MainActivity : AppCompatActivity(), MainView {
 
     private val presenter: MainPresenter by inject()
     private val permissionsToRequest by lazy { mutableListOf<String>() }
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
 
     companion object {
         private const val LOCATION_PERMISSION_RESULT = 123
@@ -33,13 +26,11 @@ class MainActivity : AppCompatActivity(), MainView {
         setContentView(R.layout.activity_main)
         presenter.attachView(this)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     override fun onResume() {
         super.onResume()
-
-        handleLocationPermissions()
+        presenter.presenterReceiveLocation()
     }
 
     override fun onDestroy() {
@@ -47,28 +38,16 @@ class MainActivity : AppCompatActivity(), MainView {
         presenter.detachView()
     }
 
-    private fun handleLocationPermissions() {
+    override fun handleLocationPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkLocationPermissions()) {
-                getLocation()
+                presenter.getLocation()
             } else {
                 requestLocationPermissions()
             }
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            getLocation()
+            presenter.getLocation()
         }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun getLocation() {
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
-                Log.d("getLocation", location.toString())
-                location?.apply {
-                    Log.d("getLocation", "lat: $latitude, lng: $longitude")
-                    //todo save
-                }
-            }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -90,7 +69,7 @@ class MainActivity : AppCompatActivity(), MainView {
         if (permissionsToRequest.isNotEmpty()) {
             requestPermissions(permissionsToRequest.toTypedArray(), LOCATION_PERMISSION_RESULT)
         } else {
-            getLocation()
+            presenter.getLocation()
         }
     }
 
@@ -100,11 +79,10 @@ class MainActivity : AppCompatActivity(), MainView {
         var wasGranted = true
         if (requestCode == LOCATION_PERMISSION_RESULT) {
             for (i in 0 until permissions.size) if (grantResults[i] != Activity.RESULT_OK) wasGranted = false
-
             if (wasGranted) {
-                handleLocationPermissions()
+                presenter.presenterReceiveLocation()
             } else {
-                //todo show dialog
+                presenter.locationPermissionNotGranted()
             }
         }
     }

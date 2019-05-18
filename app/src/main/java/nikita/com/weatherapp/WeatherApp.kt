@@ -1,6 +1,7 @@
 package nikita.com.weatherapp
 
 import android.app.Application
+import nikita.com.weatherapp.di.geoModule
 import nikita.com.weatherapp.di.networkModule
 import nikita.com.weatherapp.di.weatherModule
 import org.koin.android.ext.koin.androidContext
@@ -16,7 +17,8 @@ class WeatherApp : Application() {
 
             modules(
                 weatherModule,
-                networkModule
+                networkModule,
+                geoModule
             )
         }
     }

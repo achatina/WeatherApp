@@ -4,4 +4,6 @@ import nikita.com.weatherapp.BaseView
 
 interface MainView : BaseView{
 
+    fun handleLocationPermissions()
+
 }
