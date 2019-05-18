@@ -19,9 +19,17 @@ import java.util.*
 private const val BASE_URL = "baseUrl"
 private const val API_VERSION = "apiVersion"
 private const val OPEN_WEATHER_TOKEN = "openWeatherToken"
+private const val MEASURE_UNITS = "measureUnits"
 
 val weatherModule = module {
-    single<WeatherRepository> { WeatherDataSource(get()) }
+    single<WeatherRepository> {
+        WeatherDataSource(
+            get(named(API_VERSION)),
+            get(named(MEASURE_UNITS)),
+            get(named(OPEN_WEATHER_TOKEN)),
+            get()
+        )
+    }
     single { MainPresenter(get(), get(), get()) }
 }
 
@@ -29,6 +37,12 @@ val geoModule = module {
     single { Geocoder(androidContext(), Locale.getDefault()) }
     single<GeoRepository> { GeoDataSource(get()) }
     single { LocationServices.getFusedLocationProviderClient(androidContext()) }
+    single(named(MEASURE_UNITS)) {
+        when (Locale.getDefault().country.toUpperCase()) {
+            "US", "LR", "MM" -> "imperial"
+            else -> "metric"
+        }
+    }
 }
 
 val networkModule = module {

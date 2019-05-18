@@ -6,6 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 const val UNEXPECTED_ERROR = -1
+const val SUCCESS = 200
 
 fun retrofitClient(gson: Gson, baseUrl: String): Retrofit {
     return Retrofit.Builder()
@@ -14,6 +15,20 @@ fun retrofitClient(gson: Gson, baseUrl: String): Retrofit {
         .build()
 }
 
+/**
+ *
+ * Execute Retrofit call and returns proper value
+ *
+ * @return NetworkResponse with
+ * @param T type
+ *
+ * if response was successful, method will
+ * @return NetworkResponse with
+ * @param T type
+ *
+ * If while processing was found an error, it will return NetworkResponse with string error
+ *
+ */
 fun <T> processCall(call: Call<T>): NetworkResponse<T> {
     val response = try {
         call.execute()

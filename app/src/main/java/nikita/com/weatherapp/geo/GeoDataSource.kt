@@ -10,15 +10,14 @@ class GeoDataSource(
 
     override var currentLocation: GeoLocation? = null
 
-    override fun Location.defineLocation(): Boolean {
+    override fun Location.defineLocation(): GeoLocation? {
         val addresses = geocoder.getFromLocation(latitude, longitude, 1)
         if (addresses.isNotEmpty()) {
             currentLocation = GeoLocation(
                 latitude, longitude, addresses[0].locality
             )
-            return true
         }
 
-        return false
+        return currentLocation
     }
 }

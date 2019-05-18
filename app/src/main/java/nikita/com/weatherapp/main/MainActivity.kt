@@ -7,7 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import nikita.com.weatherapp.R
+import nikita.com.weatherapp.models.ForecastWeatherResponse
+import nikita.com.weatherapp.models.WeatherResponse
 import nikita.com.weatherapp.utils.permissionsToRequest
 import org.koin.android.ext.android.inject
 
@@ -85,5 +88,10 @@ class MainActivity : AppCompatActivity(), MainView {
                 presenter.locationPermissionNotGranted()
             }
         }
+    }
+
+    override fun showWeather(today: WeatherResponse, hourly: ForecastWeatherResponse) {
+        Log.d("MainActivity", "showWeather")
+        //todo implement
     }
 }

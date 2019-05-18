@@ -19,7 +19,7 @@ interface WeatherApi {
         @Query("appid") appId: String
     ): Call<WeatherResponse>
 
-    @GET("data/{api_version}/forecast/hourly")
+    @GET("data/{api_version}/forecast")
     fun hourlyWeather(
         @Path("api_version") apiVersion: String,
         @Query("lat") lat: Double,

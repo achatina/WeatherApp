@@ -34,7 +34,7 @@ data class Weather(
 
 data class WeatherMain(
     val temp: Float,
-    val pressure: Int,
+    val pressure: Float,
     val humidity: Int,
     val temp_min: Float,
     val temp_max: Float
@@ -43,7 +43,7 @@ data class WeatherMain(
 data class Wind(
     val speed: Float,
     @SerializedName("deg")
-    val degree: Int
+    val degree: Float
 )
 
 data class Clouds(
