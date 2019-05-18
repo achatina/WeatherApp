@@ -216,7 +216,7 @@
 
 
         <android.support.v7.widget.RecyclerView
-                android:id="@+id/weather_nearest_rv"
+                android:id="@+id/weather_days_rv"
 
                 tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:orientation="vertical"
