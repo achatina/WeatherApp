@@ -206,8 +206,11 @@
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/weather_hourly_rv"
                 android:background="@color/blue"
+
                 tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:orientation="horizontal"
+                tools:listitem="@layout/item_weather_hourly"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
