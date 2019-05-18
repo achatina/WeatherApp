@@ -217,7 +217,12 @@
 
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/weather_nearest_rv"
-                android:background="@color/white"
+
+                tools:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:orientation="vertical"
+                tools:listitem="@layout/item_weather_days"
+
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
