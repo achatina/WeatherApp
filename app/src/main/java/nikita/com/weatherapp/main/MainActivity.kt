@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
+import kotlinx.android.synthetic.main.activity_main.*
 import nikita.com.weatherapp.R
+import nikita.com.weatherapp.geo.GeoLocation
 import nikita.com.weatherapp.models.ForecastWeatherResponse
 import nikita.com.weatherapp.models.WeatherResponse
 import nikita.com.weatherapp.utils.permissionsToRequest
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun onResume() {
         super.onResume()
-        presenter.presenterReceiveLocation()
+        presenter.receiveLocation()
     }
 
     override fun onDestroy() {
@@ -83,14 +86,22 @@ class MainActivity : AppCompatActivity(), MainView {
         if (requestCode == LOCATION_PERMISSION_RESULT) {
             for (i in 0 until permissions.size) if (grantResults[i] != Activity.RESULT_OK) wasGranted = false
             if (wasGranted) {
-                presenter.presenterReceiveLocation()
+                presenter.receiveLocation()
             } else {
                 presenter.locationPermissionNotGranted()
             }
         }
     }
 
-    override fun showWeather(today: WeatherResponse, hourly: ForecastWeatherResponse) {
+    override fun close() {
+        finish()
+    }
+
+    override fun viewContext() = this
+
+    override fun progressView(): View? = weather_progress
+
+    override fun showWeather(today: WeatherResponse, hourly: ForecastWeatherResponse, geoLocation: GeoLocation) {
         Log.d("MainActivity", "showWeather")
         //todo implement
     }

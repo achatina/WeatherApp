@@ -1,6 +1,14 @@
 package nikita.com.weatherapp
 
-interface BaseView
+import android.app.Activity
+
+interface BaseView {
+
+    fun viewContext(): Activity?
+
+    fun close()
+
+}
 
 interface BasePresenter<T : BaseView > {
 

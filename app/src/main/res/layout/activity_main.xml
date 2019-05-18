@@ -12,6 +12,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,7 +94,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
 
-                    app:srcCompat="@drawable/ic_white_day_cloudy"
+                    tools:src="@drawable/ic_white_day_cloudy"
 
                     app:layout_constraintStart_toStartOf="@+id/weather_date"
                     app:layout_constraintTop_toBottomOf="@+id/weather_date"
@@ -200,6 +201,17 @@
                     app:layout_constraintTop_toTopOf="@+id/weather_ic_wind"
                     app:layout_constraintEnd_toEndOf="@+id/weather_humidity"
                     app:layout_constraintBottom_toBottomOf="@+id/weather_ic_wind"/>
+
+            <ProgressBar
+                    android:id="@+id/weather_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:indeterminateTint="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
         </android.support.constraint.ConstraintLayout>
 

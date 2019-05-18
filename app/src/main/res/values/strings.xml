@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="dialog_close">Close</string>
+    <string name="dialog_title_error">Error</string>
+    <string name="dialog_weather_error">Can\'t get weather now. Press \"Retry\" to make a new try.</string>
+    <string name="dialog_location_error">Can\'t get location now. Press \"Retry\" to make a new try.</string>
+    <string name="dialog_permission_error">You should provide location permission for this app as we receive weather by your current location.</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_retry">Retry</string>
 </resources>

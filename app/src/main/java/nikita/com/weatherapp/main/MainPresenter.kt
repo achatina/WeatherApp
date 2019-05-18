@@ -7,6 +7,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import nikita.com.weatherapp.BasePresenter
+import nikita.com.weatherapp.R
 import nikita.com.weatherapp.api.SUCCESS
 import nikita.com.weatherapp.geo.GeoLocation
 import nikita.com.weatherapp.geo.GeoRepository
@@ -29,25 +30,53 @@ class MainPresenter(
                 if (geoLocation != null) {
                     loadWeather(geoLocation)
                 } else {
-                    //todo show error
+                    showCantGetLocationDialog()
                 }
             }
         } else {
-            //todo show error
+            showCantGetLocationDialog()
         }
     }
 
-    fun presenterReceiveLocation() {
+    private fun showCantGetLocationDialog() {
+        view?.showAlert(
+            R.string.dialog_title_error,
+            R.string.dialog_location_error,
+            R.string.dialog_retry,
+            R.string.dialog_close,
+            false,
+            {
+                getLocation()
+            },
+            {
+                view?.close()
+            }
+        )
+    }
+
+    fun receiveLocation() {
         view?.handleLocationPermissions()
     }
 
     fun locationPermissionNotGranted() {
-        //todo show info dialog
-        getLocation()
+        view?.showAlert(
+            R.string.dialog_title_error,
+            R.string.dialog_permission_error,
+            R.string.dialog_ok,
+            R.string.dialog_close,
+            false,
+            {
+                receiveLocation()
+            },
+            {
+                view?.close()
+            }
+        )
     }
 
     @SuppressLint("MissingPermission")
     fun getLocation() {
+        view?.showProgress()
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             saveLocation(location)
         }
@@ -55,7 +84,8 @@ class MainPresenter(
 
     private fun loadWeather(geoLocation: GeoLocation) {
         getWeatherJob = GlobalScope.launch(Main) {
-            //todo show progress
+
+            view?.showProgress()
 
             val todayResult = withContext(IO) {
                 weatherRepository.getTodayWeather(geoLocation)
@@ -67,12 +97,24 @@ class MainPresenter(
 
             if (todayResult.code == SUCCESS && hourlyResult.code == SUCCESS
                 && todayResult.data != null && hourlyResult.data != null) {
-                view?.showWeather(todayResult.data, hourlyResult.data)
+                view?.showWeather(todayResult.data, hourlyResult.data, geoLocation)
             } else {
-                //todo handle error
+                view?.showAlert(
+                    R.string.dialog_title_error,
+                    R.string.dialog_weather_error,
+                    R.string.dialog_retry,
+                    R.string.dialog_close,
+                    false,
+                    {
+                        loadWeather(geoLocation)
+                    },
+                    {
+                        view?.close()
+                    }
+                )
             }
 
-            //todo hide progress
+            view?.hideProgress()
         }
     }
 
