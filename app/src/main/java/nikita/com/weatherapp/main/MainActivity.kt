@@ -11,8 +11,10 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import nikita.com.weatherapp.R
 import nikita.com.weatherapp.geo.GeoLocation
+import nikita.com.weatherapp.models.ForecastWeather
 import nikita.com.weatherapp.models.ForecastWeatherResponse
 import nikita.com.weatherapp.models.WeatherResponse
+import nikita.com.weatherapp.utils.areTheSameDays
 import nikita.com.weatherapp.utils.calcWeatherIcon
 import nikita.com.weatherapp.utils.getTimeByLocalTimezone
 import nikita.com.weatherapp.utils.permissionsToRequest
@@ -105,7 +107,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun progressView(): View? = weather_progress
 
-    override fun showWeather(today: WeatherResponse, hourly: ForecastWeatherResponse, geoLocation: GeoLocation) {
+    override fun showWeather(today: WeatherResponse, hourly: ForecastWeatherResponse, geoLocation: GeoLocation, dayModels: List<DayModel>) {
 
         weather_place_text.text = geoLocation.cityName
         weather_temp.text = String.format(
@@ -126,5 +128,35 @@ class MainActivity : AppCompatActivity(), MainView {
             )
         else
             weather_image.setImageResource(R.drawable.ic_white_day_cloudy)
+
+        weather_hourly_rv.adapter = HourlyWeatherAdapter()
+        weather_days_rv.adapter = DayWeatherAdapter { dayModel ->
+            showHourlyWeather(hourly.list.filter { areTheSameDays(it.date * 1000, dayModel.time) })
+        }
+
+        showDayWeather(dayModels)
+        selectDay(dayModels[0])
+
+    }
+
+    private fun showHourlyWeather(weather: List<ForecastWeather>) {
+        (weather_hourly_rv.adapter as HourlyWeatherAdapter?)?.apply {
+            setWeatherItems(weather)
+            notifyDataSetChanged()
+        }
+    }
+
+    private fun showDayWeather(weather: List<DayModel>) {
+        (weather_days_rv.adapter as DayWeatherAdapter?)?.apply {
+            setDayItems(weather)
+            notifyDataSetChanged()
+        }
+    }
+
+    private fun selectDay(day: DayModel) {
+        (weather_days_rv.adapter as DayWeatherAdapter?)?.apply {
+            selectDay(day)
+            notifyDataSetChanged()
+        }
     }
 }

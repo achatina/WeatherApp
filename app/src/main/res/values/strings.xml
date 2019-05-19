@@ -9,6 +9,9 @@
     <string name="dialog_retry">Retry</string>
 
     <string name="weather_temp">%d&#xb0;/%d&#xb0;</string>
+    <string name="weather_hourly_temp">%d&#xb0;</string>
     <string name="weather_humidity">%d%%</string>
     <string name="weather_wind">%.1fм/сек</string>
+
+    <string name="time_with_leading_zero">%02d</string>
 </resources>

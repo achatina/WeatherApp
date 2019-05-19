@@ -14,7 +14,8 @@ interface MainView : BaseView, ProgressView, AlertView {
     fun showWeather(
         today: WeatherResponse,
         hourly: ForecastWeatherResponse,
-        geoLocation: GeoLocation
+        geoLocation: GeoLocation,
+        dayModels: List<DayModel>
     )
 
 }

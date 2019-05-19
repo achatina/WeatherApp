@@ -11,7 +11,9 @@ import nikita.com.weatherapp.R
 import nikita.com.weatherapp.api.SUCCESS
 import nikita.com.weatherapp.geo.GeoLocation
 import nikita.com.weatherapp.geo.GeoRepository
+import nikita.com.weatherapp.utils.areTheSameDays
 import nikita.com.weatherapp.weather.WeatherRepository
+import kotlin.math.roundToInt
 
 class MainPresenter(
     private val weatherRepository: WeatherRepository,
@@ -96,8 +98,24 @@ class MainPresenter(
             }
 
             if (todayResult.code == SUCCESS && hourlyResult.code == SUCCESS
-                && todayResult.data != null && hourlyResult.data != null) {
-                view?.showWeather(todayResult.data, hourlyResult.data, geoLocation)
+                && todayResult.data != null && hourlyResult.data != null
+            ) {
+
+                val days = mutableListOf<DayModel>()
+
+                hourlyResult.data.list.forEach { forecastWeather ->
+                    if (!days.any { areTheSameDays(it.time, forecastWeather.date * 1000) })
+                        days.add(
+                            DayModel(
+                                forecastWeather.date * 1000,
+                                forecastWeather.main.temp_min.roundToInt(),
+                                forecastWeather.main.temp_max.roundToInt(),
+                                if (forecastWeather.weather.isNotEmpty()) forecastWeather.weather[0].id else 0
+                            )
+                        )
+                }
+
+                view?.showWeather(todayResult.data, hourlyResult.data, geoLocation, days)
             } else {
                 view?.showAlert(
                     R.string.dialog_title_error,

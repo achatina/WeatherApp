@@ -9,7 +9,7 @@ fun calcWeatherIcon(code: Int, sunrise: Long, sunset: Long): Int {
 }
 
 @DrawableRes
-private fun calcDayIcon(code: Int): Int {
+fun calcDayIcon(code: Int): Int {
     return when {
         code == 800 -> R.drawable.ic_white_day_bright
         code > 800 || code in 700..799 -> R.drawable.ic_white_day_cloudy
@@ -23,7 +23,7 @@ private fun calcDayIcon(code: Int): Int {
 }
 
 @DrawableRes
-private fun calcNightIcon(code: Int): Int {
+fun calcNightIcon(code: Int): Int {
     return when {
         code == 800 -> R.drawable.ic_white_night_bright
         code > 800 || code in 700..799 -> R.drawable.ic_white_night_cloudy
