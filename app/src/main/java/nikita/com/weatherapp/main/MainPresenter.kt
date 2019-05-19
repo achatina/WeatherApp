@@ -3,9 +3,12 @@ package nikita.com.weatherapp.main
 import android.annotation.SuppressLint
 import android.location.Location
 import com.google.android.gms.location.FusedLocationProviderClient
-import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import nikita.com.weatherapp.BasePresenter
 import nikita.com.weatherapp.R
 import nikita.com.weatherapp.api.SUCCESS

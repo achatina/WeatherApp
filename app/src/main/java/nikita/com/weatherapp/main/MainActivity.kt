@@ -35,14 +35,10 @@ class MainActivity : AppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.attachView(this)
+        presenter.findLocation()
 
         weather_location_icon.setOnClickListener { presenter.findLocation() }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.findLocation()
     }
 
     override fun onDestroy() {

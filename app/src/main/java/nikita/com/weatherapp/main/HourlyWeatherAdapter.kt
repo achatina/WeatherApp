@@ -8,8 +8,6 @@ import kotlinx.android.synthetic.main.item_weather_hourly.view.*
 import nikita.com.weatherapp.R
 import nikita.com.weatherapp.models.ForecastWeather
 import nikita.com.weatherapp.utils.calcDayIcon
-import nikita.com.weatherapp.utils.calcWeatherIcon
-import nikita.com.weatherapp.utils.getTimeByLocalTimezone
 import java.util.*
 import java.util.Calendar.HOUR_OF_DAY
 import java.util.Calendar.MINUTE
