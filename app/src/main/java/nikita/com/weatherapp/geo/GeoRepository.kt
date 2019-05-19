@@ -4,7 +4,7 @@ import android.location.Location
 
 interface GeoRepository {
 
-    var currentLocation: GeoLocation?
+    val currentLocation: GeoLocation?
 
     /**
      * Define GeoLocation by Location parameters and save it to current location

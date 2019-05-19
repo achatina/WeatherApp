@@ -8,12 +8,13 @@ class GeoDataSource(
     private val geocoder: Geocoder
 ) : GeoRepository {
 
-    override var currentLocation: GeoLocation? = null
+    private var _currentLocation: GeoLocation? = null
+    override val currentLocation: GeoLocation? = _currentLocation
 
     override fun Location.defineLocation(): GeoLocation? {
         val addresses = geocoder.getFromLocation(latitude, longitude, 1)
         if (addresses.isNotEmpty()) {
-            currentLocation = GeoLocation(
+            _currentLocation = GeoLocation(
                 latitude, longitude, addresses[0].locality
             )
         }
