@@ -7,4 +7,8 @@
     <string name="dialog_permission_error">You should provide location permission for this app as we receive weather by your current location.</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_retry">Retry</string>
+
+    <string name="weather_temp">%d&#xb0;/%d&#xb0;</string>
+    <string name="weather_humidity">%d%%</string>
+    <string name="weather_wind">%.1fм/сек</string>
 </resources>

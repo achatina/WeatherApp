@@ -92,7 +92,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
 
                     tools:src="@drawable/ic_white_day_cloudy"
 
@@ -115,6 +115,7 @@
                     android:layout_height="24dp"
 
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
                     app:srcCompat="@drawable/ic_temp"
                     app:layout_constraintStart_toStartOf="@+id/weather_center_guideline"
                     app:layout_constraintTop_toTopOf="@+id/weather_image"/>

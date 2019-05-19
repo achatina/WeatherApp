@@ -7,15 +7,17 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import nikita.com.weatherapp.R
 import nikita.com.weatherapp.geo.GeoLocation
 import nikita.com.weatherapp.models.ForecastWeatherResponse
 import nikita.com.weatherapp.models.WeatherResponse
+import nikita.com.weatherapp.utils.calcWeatherIcon
+import nikita.com.weatherapp.utils.getTimeByLocalTimezone
 import nikita.com.weatherapp.utils.permissionsToRequest
 import org.koin.android.ext.android.inject
+import kotlin.math.roundToInt
 
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -32,11 +34,13 @@ class MainActivity : AppCompatActivity(), MainView {
         setContentView(R.layout.activity_main)
         presenter.attachView(this)
 
+        weather_location_icon.setOnClickListener { presenter.findLocation() }
+
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.receiveLocation()
+        presenter.findLocation()
     }
 
     override fun onDestroy() {
@@ -47,12 +51,12 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun handleLocationPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkLocationPermissions()) {
-                presenter.getLocation()
+                presenter.getLocationAfterPermissionsWasGranted()
             } else {
                 requestLocationPermissions()
             }
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            presenter.getLocation()
+            presenter.getLocationAfterPermissionsWasGranted()
         }
     }
 
@@ -75,7 +79,7 @@ class MainActivity : AppCompatActivity(), MainView {
         if (permissionsToRequest.isNotEmpty()) {
             requestPermissions(permissionsToRequest.toTypedArray(), LOCATION_PERMISSION_RESULT)
         } else {
-            presenter.getLocation()
+            presenter.getLocationAfterPermissionsWasGranted()
         }
     }
 
@@ -86,7 +90,7 @@ class MainActivity : AppCompatActivity(), MainView {
         if (requestCode == LOCATION_PERMISSION_RESULT) {
             for (i in 0 until permissions.size) if (grantResults[i] != Activity.RESULT_OK) wasGranted = false
             if (wasGranted) {
-                presenter.receiveLocation()
+                presenter.findLocation()
             } else {
                 presenter.locationPermissionNotGranted()
             }
@@ -102,7 +106,25 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun progressView(): View? = weather_progress
 
     override fun showWeather(today: WeatherResponse, hourly: ForecastWeatherResponse, geoLocation: GeoLocation) {
-        Log.d("MainActivity", "showWeather")
-        //todo implement
+
+        weather_place_text.text = geoLocation.cityName
+        weather_temp.text = String.format(
+            getString(R.string.weather_temp),
+            today.main.temp_min.roundToInt(),
+            today.main.temp_max.roundToInt()
+        )
+        weather_humidity.text = String.format(getString(R.string.weather_humidity), today.main.humidity)
+        weather_wind.text = String.format(getString(R.string.weather_wind), today.wind.speed)
+
+        if (today.weather.isNotEmpty())
+            weather_image.setImageResource(
+                calcWeatherIcon(
+                    today.weather[0].id,
+                    getTimeByLocalTimezone(today.sys.sunrise * 1000),
+                    getTimeByLocalTimezone(today.sys.sunset * 1000)
+                )
+            )
+        else
+            weather_image.setImageResource(R.drawable.ic_white_day_cloudy)
     }
 }

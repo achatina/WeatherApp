@@ -46,7 +46,7 @@ class MainPresenter(
             R.string.dialog_close,
             false,
             {
-                getLocation()
+                getLocationAfterPermissionsWasGranted()
             },
             {
                 view?.close()
@@ -54,7 +54,7 @@ class MainPresenter(
         )
     }
 
-    fun receiveLocation() {
+    fun findLocation() {
         view?.handleLocationPermissions()
     }
 
@@ -66,7 +66,7 @@ class MainPresenter(
             R.string.dialog_close,
             false,
             {
-                receiveLocation()
+                findLocation()
             },
             {
                 view?.close()
@@ -75,7 +75,7 @@ class MainPresenter(
     }
 
     @SuppressLint("MissingPermission")
-    fun getLocation() {
+    fun getLocationAfterPermissionsWasGranted() {
         view?.showProgress()
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             saveLocation(location)
