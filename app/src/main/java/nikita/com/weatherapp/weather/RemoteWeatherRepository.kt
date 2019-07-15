@@ -9,7 +9,7 @@ import nikita.com.weatherapp.models.WeatherResponse
 import retrofit2.Retrofit
 import java.util.*
 
-class WeatherDataSource(
+class RemoteWeatherRepository(
     private val apiVersion: String,
     private val units: String,
     private val openWeatherToken: String,

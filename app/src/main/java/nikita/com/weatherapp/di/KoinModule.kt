@@ -6,10 +6,10 @@ import com.google.gson.Gson
 import nikita.com.weatherapp.BuildConfig
 import nikita.com.weatherapp.R
 import nikita.com.weatherapp.api.retrofitClient
-import nikita.com.weatherapp.geo.GeoDataSource
+import nikita.com.weatherapp.geo.GeocoderGeoRepository
 import nikita.com.weatherapp.geo.GeoRepository
 import nikita.com.weatherapp.main.MainPresenter
-import nikita.com.weatherapp.weather.WeatherDataSource
+import nikita.com.weatherapp.weather.RemoteWeatherRepository
 import nikita.com.weatherapp.weather.WeatherRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
@@ -23,7 +23,7 @@ private const val MEASURE_UNITS = "measureUnits"
 
 val weatherModule = module {
     single<WeatherRepository> {
-        WeatherDataSource(
+        RemoteWeatherRepository(
             get(named(API_VERSION)),
             get(named(MEASURE_UNITS)),
             get(named(OPEN_WEATHER_TOKEN)),
@@ -35,7 +35,7 @@ val weatherModule = module {
 
 val geoModule = module {
     single { Geocoder(androidContext(), Locale.getDefault()) }
-    single<GeoRepository> { GeoDataSource(get()) }
+    single<GeoRepository> { GeocoderGeoRepository(get()) }
     single { LocationServices.getFusedLocationProviderClient(androidContext()) }
     single(named(MEASURE_UNITS)) {
         when (Locale.getDefault().country.toUpperCase()) {

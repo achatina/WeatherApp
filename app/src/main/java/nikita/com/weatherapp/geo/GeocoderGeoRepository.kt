@@ -4,7 +4,7 @@ import android.location.Geocoder
 import android.location.Location
 
 
-class GeoDataSource(
+class GeocoderGeoRepository(
     private val geocoder: Geocoder
 ) : GeoRepository {
 
